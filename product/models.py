@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _ 
 # Create your models here.
 FLAG_TYPES = (
     ('Sale','Sale'),
@@ -18,16 +19,22 @@ class Product(models.Model):
     flag = models.CharField(_("Flag"),choices=FLAG_TYPES,max_length=10)
     image = models.ImageField( _("Image"),upload_to='products', height_field=None, width_field=None, max_length=None)
 
+    def __str__(self):
+        return self.name
+
 class ProductImage(models.Model):
     product = models.ForeignKey("Product",related_name='product_image',verbose_name=_("Product"),on_delete=models.CASCADE)
     image = models.ImageField( _("Image"),upload_to="product_images", height_field=None, width_field=None, max_length=None)
 
+    def __str__(self):
+        return str(self.product)
+
 class Review(models.Model):
-    user = models.ForeignKey(User,related_name="author_review'",verbose_name=_("Author"),on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(User,related_name="author_review",verbose_name=_("Author"),on_delete=models.SET_NULL,null=True)
     Product = models.ForeignKey("Product", related_name='product_review',verbose_name=_("Product"), on_delete=models.CASCADE )
     review = models.TextField(_("Review"),max_length=1000)
     create_at = models.DateTimeField(_("Create At"),default=timezone.now)
-    rate = models.IntegerField(_("Rate"),max=5)
+    rate = models.IntegerField(_("Rate"))
 
 class Brand(models.Model):
     name = models.CharField(_("Name"),max_length=50)
