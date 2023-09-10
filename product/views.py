@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import ListView , DetailView
+from django.views.generic import DetailView , ListView
 from .models import Product,Review,ProductImage,Brand
 # Create your views here.
 
 class ProductList(ListView):
-    model : Product
+    model = Product
+    #queryset = Product.objects.all()
 
 class ProductDetail(DetailView):
-    model : Product
+    model = Product
