@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _ 
+from PIL import Image
 # Create your models here.
 FLAG_TYPES = (
     ('Sale','Sale'),
@@ -21,6 +22,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    '''
+    def save(self,*args,**kwargs):
+        super().save(*args,**kwargs)
+        img=Image.open(self.image.path)
+        if img.width > 450 or img.height > 450:
+            img.thumbnail((178,194))
+            img.save(self.image.path)   '''
 
 class ProductImage(models.Model):
     product = models.ForeignKey("Product",related_name='product_image',verbose_name=_("Product"),on_delete=models.CASCADE)
