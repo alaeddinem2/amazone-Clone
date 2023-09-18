@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -45,7 +47,10 @@
 
         <!-- CUSTOM -->
         <link rel="stylesheet" href="{% static 'en/css/main.css' %}">
-        <link rel="stylesheet" href="{% static 'en/css/index.css' %}">
+        {% block CSS %}
+            <link rel="stylesheet" href="{% static 'en/css/index.css' %}">
+        {% endblock CSS %}
+        
         <!--=====================================
                     CSS LINK PART END
         =======================================-->
