@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 from django.views.generic import DetailView , ListView
 from .models import Product,Review,ProductImage,Brand
@@ -17,4 +18,10 @@ class ProductDetail(DetailView):
         context["reviews"] =Review.objects.filter(Product=self.get_object())
         context["retaled_products"]=Product.objects.filter(brand=self.get_object().brand)
         return context
+    
+
+class BrandList(ListView):
+    model = Brand
+
+    
     
