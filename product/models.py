@@ -1,8 +1,11 @@
+from collections.abc import Iterable
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _ 
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
 
 # Create your models here.
 FLAG_TYPES = (
@@ -21,16 +24,14 @@ class Product(models.Model):
     flag = models.CharField(_("Flag"),choices=FLAG_TYPES,max_length=10)
     image = models.ImageField( _("Image"),upload_to='products', height_field=None, width_field=None, max_length=None)
     tags = TaggableManager()
+    slug = models.SlugField(_("Slug"), null=True,blank=True)
 
     def __str__(self):
         return self.name
-    '''
-    def save(self,*args,**kwargs):
-        super().save(*args,**kwargs)
-        img=Image.open(self.image.path)
-        if img.width > 450 or img.height > 450:
-            img.thumbnail((178,194))
-            img.save(self.image.path)   '''
+    
+    def save(self,*args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product,self).save(*args, **kwargs)
 
 class ProductImage(models.Model):
     product = models.ForeignKey("Product",related_name='product_image',verbose_name=_("Product"),on_delete=models.CASCADE)
