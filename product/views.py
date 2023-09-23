@@ -11,3 +11,10 @@ class ProductList(ListView):
 
 class ProductDetail(DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reviews"] =Review.objects.filter(Product=self.get_object())
+        context["retaled_products"]=Product.objects.filter(brand=self.get_object().brand)
+        return context
+    

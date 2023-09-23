@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _ 
-from PIL import Image
+from taggit.managers import TaggableManager
+
 # Create your models here.
 FLAG_TYPES = (
     ('Sale','Sale'),
@@ -19,6 +20,7 @@ class Product(models.Model):
     description = models.TextField(_("Description"),max_length=4000)
     flag = models.CharField(_("Flag"),choices=FLAG_TYPES,max_length=10)
     image = models.ImageField( _("Image"),upload_to='products', height_field=None, width_field=None, max_length=None)
+    tags = TaggableManager()
 
     def __str__(self):
         return self.name
@@ -43,6 +45,11 @@ class Review(models.Model):
     review = models.TextField(_("Review"),max_length=1000)
     create_at = models.DateTimeField(_("Create At"),default=timezone.now)
     rate = models.IntegerField(_("Rate"))
+
+    def __str__(self):
+        
+        return  str(self.user) +" " + str(self.Product) + "  review"
+    
 
 class Brand(models.Model):
     name = models.CharField(_("Name"),max_length=50)
