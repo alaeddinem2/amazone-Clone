@@ -12,6 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['brand','name','price']
     #list_editable = ['price']
     inlines = [ProductImageTabulair]
+    search_fields = ['name']
 
 
 admin.site.register(Product,ProductAdmin)

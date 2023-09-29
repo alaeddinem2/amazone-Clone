@@ -8,6 +8,7 @@ from django.db.models.aggregates import Max, Min, Avg, Count, Sum
 # Create your views here.
 class ProductList(ListView):
     model = Product
+    paginate_by = 30
     
     
 
