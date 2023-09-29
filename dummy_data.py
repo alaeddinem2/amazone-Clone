@@ -4,7 +4,8 @@ django.setup()
 
 from faker import Faker
 import random
-from product.models import Product, Brand
+from product.models import Product, Brand, Review,ProductImage
+from django.contrib.auth.models import User
 
 def seed_brands(n):
     fake = Faker()
@@ -33,9 +34,36 @@ def seed_products(n):
             quantity = random.randint(0,50),
             sku = random.randint(1000,100000)          
         )
-    
+def seed_reviews(n):
+    fake = Faker()
+    flags = ['New','Features','Sale']
+    images= ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg']
+    for _ in range(n):
+        Review.objects.create(
+            
+            user = User.objects.get(id=random.randint(1,5)),
+            Product = Product.objects.get(id=random.randint(4,2000)),
+            review = fake.text(max_nb_chars=100),
+            rate = random.randint(0,5),
+                      
+        )    
+    print(f'seed {n} Brands')
+
+def seed_images():
+    fake = Faker()
+    flags = ['New','Features','Sale']
+    images= ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg']
+    for n in range(5,2000):
+        for _ in range(3):
+            ProductImage.objects.create( 
+                product = Product.objects.get(id=n),
+                image = f'products/{images[random.randint(0,9)]}',
+                
+                
+                        
+            )    
     print(f'seed {n} Brands')
 
 
-seed_products(2000)
+seed_images()
 
