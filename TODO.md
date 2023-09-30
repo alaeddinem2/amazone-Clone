@@ -1,0 +1,13 @@
+- API
+- docker
+- ajax
+- celery
+- translation
+- orders
+- cart
+- users
+- coupons
+- chaching
+- redis
+- postman
+- deploy
