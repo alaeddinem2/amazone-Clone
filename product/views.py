@@ -8,7 +8,7 @@ from django.db.models.aggregates import Max, Min, Avg, Count, Sum
 # Create your views here.
 class ProductList(ListView):
     model = Product
-    paginate_by = 30
+    paginate_by = 24
     
     
 
@@ -24,10 +24,12 @@ class ProductDetail(DetailView):
 
 class BrandList(ListView):
     model = Brand
+    paginate_by = 15
     queryset = Brand.objects.annotate(product_count = Count("product_brand"))
 
 class BrandDetail(ListView):
     model = Product
+    paginate_by = 20
     template_name = 'product/brand_detail.html'
 
     def get_queryset(self):
