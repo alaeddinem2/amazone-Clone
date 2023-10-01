@@ -67,9 +67,5 @@ def querysetAPI(request):
     #data = Product.objects.aggregate(Avg('price'))
     #annotate
     data = Product.objects.annotate(price_tva=F('price')*1.17)
-
-
-
-
     return render(request,"product/querysetApi.html",{"data":data})       
     
