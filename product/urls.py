@@ -1,6 +1,6 @@
 from django.urls import path,include
 from .views import ProductList , ProductDetail, BrandList,BrandDetail, querysetAPI
-from .API.api import product_list_api,product_detail_api,ProductDetailApi,ProductListApi, BrandDetailApi, BrandListApi, ReviewDetailApi, ReviewListApi
+from .api.api import product_list_api,product_detail_api,ProductDetailApi,ProductListApi, BrandDetailApi, BrandListApi, ReviewDetailApi, ReviewListApi
 app_name = 'product'
 
 urlpatterns = [
