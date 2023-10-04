@@ -2,10 +2,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
 from .serializers import ProductDetailSerializer,ProductListSerializer, BrandDetailSerializer,BrandListSerializer, ReviewSerializer
 from ..models import Product, Brand, Review
 from rest_framework import generics
 from .myfilter import ProductFilters
+from .mypagination import MyPagination
 
 @api_view(['GET'])
 def product_list_api(request):
@@ -26,7 +28,9 @@ class ProductListApi(generics.ListAPIView):
     filterset_fields = ['name', 'flag','brand']
     search_fields = ['name', 'quantity']
     ordering_fields = ['name', 'price','brand']
-    filterset_class = ProductFilters 
+    filterset_class = ProductFilters
+    pagination_class = MyPagination
+    permission_classes = [IsAuthenticated]
 
 class ProductDetailApi(generics.RetrieveAPIView):
     queryset = Product.objects.all()
