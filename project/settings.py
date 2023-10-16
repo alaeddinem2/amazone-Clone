@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'product',
     'config',
+    'order'
 ]
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
