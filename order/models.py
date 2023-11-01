@@ -15,11 +15,11 @@ ORDER_STATUS = (
     ('Recieved','Recieved'),
     ('Processed','Processed'),
     ('Shipped','Shipped'),
-    ('Delivered','Delivered'),
+    ('Delivered','Delivered'), 
 )
 class Cart(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"),related_name='cart_user', on_delete=models.SET_NULL,blank=True,null=True)
-    status = models.CharField(_("Status"), max_length=10, choices=CART_STATUS)
+    status = models.CharField(_("Status"), max_length=10, choices= CART_STATUS)
 
     def __str__(self):
         return str(self.user)
@@ -27,7 +27,7 @@ class Cart(models.Model):
 class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, verbose_name=_("Cart"),related_name='cart_detail', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name=_("Product"),related_name='cart_product', on_delete=models.CASCADE)
-    quntity = models.IntegerField(_("Quantity"))
+    quantity = models.IntegerField(_("Quantity"))
     total = models.FloatField(_("Total"))
 
     def __str__(self):
