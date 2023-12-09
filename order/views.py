@@ -8,6 +8,7 @@ from .models import Order
 
 class OrderList(ListView):
     model = Order
+    paginated_by = 10
 
     def get_queryset(self):
         

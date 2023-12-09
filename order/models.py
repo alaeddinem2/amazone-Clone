@@ -50,17 +50,18 @@ class Order(models.Model):
     total_after_coupon = models.FloatField(_("Total-Coupon"),blank=True,null=True)
 
     def __str__(self):
-        return str(self.code)
+        
+        return str(self.user)+ "-" + self.code
     
     def save(self,*args, **kwargs):
         self.code = generate_code()
         super(Order,self).save(*args, **kwargs)
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Cart, verbose_name=_("Order"),related_name='order_detail', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name=_("Product"),related_name='oredr_product', on_delete=models.SET_NULL,blank=True,null=True)
+    order = models.ForeignKey(Order, verbose_name=_("Order"),related_name='order_detail', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name=_("Product"),related_name='order_product', on_delete=models.SET_NULL,blank=True,null=True)
     price = models.FloatField(_("Price"))
-    quntity = models.IntegerField(_("Quantity"))
+    quantity = models.IntegerField(_("Quantity"))
     total = models.FloatField(_("Total"))
 
     def __str__(self):
