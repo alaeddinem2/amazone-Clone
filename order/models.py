@@ -23,6 +23,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+    def cart_total(self):
+        total =0 
+        for item in self.cart_detail.all():
+            total+=item.total 
+
+        return total
 
 class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, verbose_name=_("Cart"),related_name='cart_detail', on_delete=models.CASCADE)
@@ -36,14 +43,18 @@ class CartDetail(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"),related_name='order_user', on_delete=models.SET_NULL,blank=True,null=True)
     status = models.CharField(_("Status"), max_length=10, choices=ORDER_STATUS)
-    code = models.CharField(_("Code"), max_length=50,default=generate_code())
+    code = models.CharField(_("Code"), max_length=50,blank=True,null=True)
     order_time = models.DateTimeField(_("Oder Time"), default=timezone.now)
     delivery_time = models.DateTimeField(_("Delivery Time"), null=True,blank=True)
     coupon = models.ForeignKey('Coupon', verbose_name=_("Coupon"),related_name='coupon_order', on_delete=models.SET_NULL,blank=True,null=True)
     total_after_coupon = models.FloatField(_("Total-Coupon"),blank=True,null=True)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.code)
+    
+    def save(self,*args, **kwargs):
+        self.code = generate_code()
+        super(Order,self).save(*args, **kwargs)
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Cart, verbose_name=_("Order"),related_name='order_detail', on_delete=models.CASCADE)
