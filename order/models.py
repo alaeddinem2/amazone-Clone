@@ -54,8 +54,9 @@ class Order(models.Model):
         return str(self.user)+ "-" + self.code
     
     def save(self,*args, **kwargs):
-        self.code = generate_code()
-        super(Order,self).save(*args, **kwargs)
+        if not self.code:
+            self.code = generate_code()
+            super(Order,self).save(*args, **kwargs)
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, verbose_name=_("Order"),related_name='order_detail', on_delete=models.CASCADE)
