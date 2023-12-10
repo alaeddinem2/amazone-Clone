@@ -85,5 +85,6 @@ class Coupon(models.Model):
         self.end_date = self.start_date + week
         super(Coupon,self).save(*args, **kwargs)
 
+
     
 
