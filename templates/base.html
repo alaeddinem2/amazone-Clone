@@ -1,9 +1,9 @@
 {% load static %}
 {% load i18n %}
 
-
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" {% if LANGUAGE_CODE == 'ar' %} dir="rtl" {% endif %}>
     <head>
         <!--=====================================
                     META TAG PART START
@@ -33,8 +33,8 @@
         =======================================-->
         <!-- FAVICON -->
         <link rel="icon" href="{{company_data.logo.url}}">
-
-        <!-- FONTS -->
+     {% if LANGUAGE_CODE == 'en' %}
+             <!-- FONTS -->
         <link rel="stylesheet" href="{% static 'en/fonts/flaticon/flaticon.css' %}">
         <link rel="stylesheet" href="{% static 'en/fonts/icofont/icofont.min.css' %}">
         <link rel="stylesheet" href="{% static 'en/fonts/fontawesome/fontawesome.min.css' %}">
@@ -47,10 +47,28 @@
 
         <!-- CUSTOM -->
         <link rel="stylesheet" href="{% static 'en/css/main.css' %}">
-        {% block CSS %}
-            <link rel="stylesheet" href="{% static 'en/css/index.css' %}">
-        {% endblock CSS %}
         
+
+    {% else %}
+            <!-- FONTS -->
+        <link rel="stylesheet" href="{% static 'ar/fonts/flaticon/flaticon.css' %}">
+        <link rel="stylesheet" href="{% static 'ar/fonts/icofont/icofont.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ar/fonts/fontawesome/fontawesome.min.css' %}">
+
+        <!-- VENDOR -->
+        <link rel="stylesheet" href="{% static 'ar/vendor/venobox/venobox.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ar/vendor/slickslider/slick.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ar/vendor/niceselect/nice-select.min.css' %}">
+        <link rel="stylesheet" href="{% static 'en/vendor/bootstrap/bootstrap.min.css' %}">
+
+        <!-- CUSTOM -->
+        <link rel="stylesheet" href="{% static 'ar/css/main.css' %}">
+        
+    {% endif %}
+        
+    {% block CSS %}
+          <link rel="stylesheet" href="{% static 'en/css/index.css' %}">
+    {% endblock CSS %}
         <!--=====================================
                     CSS LINK PART END
         =======================================-->
@@ -67,7 +85,7 @@
                 <div class="row">
                     <div class="col-md-12 col-lg-5">
                         <div class="header-top-welcome">
-                            <p>Welcome to Ecomart in Your Dream Online Store!</p>
+                            <p>{% translate "Welcome to Ecomart in Your Dream Online Store!" %}</p>
                         </div>
                     </div>
                     <div class="col-md-5 col-lg-3">
@@ -94,9 +112,9 @@
                     </div>
                     <div class="col-md-7 col-lg-4">
                         <ul class="header-top-list">
-                            <li><a href="offer.html">offers</a></li>
-                            <li><a href="faq.html">need help</a></li>
-                            <li><a href="contact.html">contact us</a></li>
+                            <li><a href="offer.html">{% translate "offers" %}</a></li>
+                            <li><a href="faq.html">{% translate "need help" %}</a></li>
+                            <li><a href="contact.html">{% translate "contact us" %}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -125,7 +143,7 @@
                     </a>
                     <a href="login.html" class="header-widget" title="My Account">
                         <img src="{% static 'en/images/user.png' %}" alt="user">
-                        <span>join</span>
+                        <span>{% translate "join" %}</span>
                     </a>
 
                     <form class="header-form">
@@ -166,17 +184,17 @@
                         <div class="navbar-content">
                             <ul class="navbar-list">
                                 <li class="navbar-item dropdown">
-                                    <a class="navbar-link " href="/">Home</a>
+                                    <a class="navbar-link " href="/">{% translate "Home" %}</a>
                                 </li>
                                 <li class="navbar-item dropdown-megamenu">
-                                    <a class="navbar-link" href="">Shop</a>
+                                    <a class="navbar-link" href="">{% translate "Shop" %}</a>
                                     
                                 </li>
                                 <li class="navbar-item dropdown">
-                                    <a class="navbar-link " href="">Brands</a>
+                                    <a class="navbar-link " href="">{% translate "Brands" %}</a>
                                 </li>
                                 <li class="navbar-item dropdown">
-                                    <a class="navbar-link " href="">Orders</a>
+                                    <a class="navbar-link " href="">{% translate "Orders" %}</a>
                                 </li>
                                 
                             </ul>
@@ -184,14 +202,14 @@
                                 <div class="navbar-info">
                                     <i class="icofont-ui-touch-phone"></i>
                                     <p>
-                                        <small>call us</small>
+                                        <small>{% translate "call us" %}</small>
                                         <span>(+880) 183 8288 389</span>
                                     </p>
                                 </div>
                                 <div class="navbar-info">
                                     <i class="icofont-ui-email"></i>
                                     <p>
-                                        <small>email us</small>
+                                        <small>{% translate "email us" %}</small>
                                         <span>support@greeny.com</span>
                                     </p>
                                 </div>
@@ -214,7 +232,7 @@
             <div class="category-header">
                 <h4 class="category-title">
                     <i class="fas fa-align-left"></i>
-                    <span>categories</span>
+                    <span>{% translate "categories" %}</span>
                 </h4>
                 <button class="category-close"><i class="icofont-close"></i></button>
             </div>
@@ -683,7 +701,7 @@
         <!--=====================================
                     PRODUCT VIEW END
         =======================================-->
-{{% block body %}
+{% block body %}
 
 
 {% endblock body %}}
@@ -852,7 +870,8 @@
         <!--=====================================
                     JS LINK PART START
         =======================================-->
-        <!-- VENDOR -->
+        {% if LANGUAGE_CODE == 'en' %}
+            <!-- VENDOR -->
         <script src="{% static 'en/vendor/bootstrap/jquery-1.12.4.min.js' %}"></script>
         <script src="{% static 'en/vendor/bootstrap/popper.min.js' %}"></script>
         <script src="{% static 'en/vendor/bootstrap/bootstrap.min.js' %}"></script>
@@ -868,6 +887,25 @@
         <script src="{% static 'en/js/venobox.js' %}"></script>
         <script src="{% static 'en/js/slick.js' %}"></script>
         <script src="{% static 'en/js/main.js' %}"></script> 
+        {% else %}
+            <!-- VENDOR -->
+        <script src="{% static 'ar/vendor/bootstrap/jquery-1.12.4.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/bootstrap/popper.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/bootstrap/bootstrap.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/countdown/countdown.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/niceselect/nice-select.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/slickslider/slick.min.js' %}"></script>
+        <script src="{% static 'ar/vendor/venobox/venobox.min.js' %}"></script>
+
+        <!-- CUSTOM -->
+        <script src="{% static 'ar/js/nice-select.js' %}"></script>
+        <script src="{% static 'ar/js/countdown.js' %}"></script>
+        <script src="{% static 'ar/js/accordion.js' %}"></script>
+        <script src="{% static 'ar/js/venobox.js' %}"></script>
+        <script src="{% static 'ar/js/slick.js' %}"></script>
+        <script src="{% static 'ar/js/main.js' %}"></script> 
+        {% endif %}
+        
         <!--=====================================
                     JS LINK PART END
         =======================================-->

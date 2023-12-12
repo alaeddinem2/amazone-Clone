@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -169,10 +170,12 @@ SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOCALE_PATHS = ['locale']
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]   # notice the S which was forgotten
+    
+
 
 LANGUAGES = [
     ("ar", ("Arabic")),
     ("en", ("English")),
-    
+   
 ]
