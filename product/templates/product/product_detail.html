@@ -113,15 +113,15 @@
                             </div>
                             <div class="details-add-group">
                                 <form action="{% url "orders:add-to-cart" %}" method="POST">
-                                {% csrf_token %}
-                                    <input class="" title="Quantity Number" type="text" name="quantity" value="1">
-                                    <input type="hidden" name="product_id" value="{{product.id}}">
-                                <button action="submit" class="product-add" title="Add to Cart">
-                                    <i class="fas fa-shopping-basket"></i>
-                                    <span>add to cart</span>
-                                </button>
+                                    {% csrf_token %}
+                                        <input class="" title="Quantity Number" type="text" name="quantity" value="1">
+                                        <input type="hidden" name="product_id" value="{{product.id}}">
+                                    <button action="submit" class="product-add" title="Add to Cart">
+                                        <i class="fas fa-shopping-basket"></i>
+                                        <span>add to cart</span>
+                                    </button>
                                 
-                            </form>
+                                </form>
                             </div>
                             
                                 
