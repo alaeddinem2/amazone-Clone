@@ -1,10 +1,11 @@
 from rest_framework.response import Response
 from rest_framework import generics
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_list_or_404,get_object_or_404
 from django.contrib.auth.models import User
 from .serializers import CartDetailSerializer,CartSerializer,OrderListSerializer,OrderDetailSerializer
-from order.models import Cart,CartDetail,Order,OrderDetail
+from order.models import Cart,CartDetail,Order,OrderDetail,Coupon
 from product.models import Product
+from django.utils import timezone
 
 class CartDetailCreateAPI(generics.GenericAPIView):
     serializer_class = CartSerializer
@@ -92,4 +93,26 @@ class CreateOrderAPI(generics.GenericAPIView):
         return Response({'message':'Order created succsuccessfully'})
 
 class ApplyCouponAPI(generics.GenericAPIView):
-    pass 
+    def post(self,request,*args, **kwargs):
+        user = User.objects.get(username=self.kwargs['username'])
+        cart = Cart.objects.get(user=user,status='InProgress')
+        coupon = get_object_or_404(Coupon,code = request.data['coupon_code'])
+        
+        if coupon and coupon.quantity >0 :
+            today_date = timezone.now()
+
+            if today_date >= coupon.start_date and today_date <= coupon.end_date :
+                coupon_value = cart.cart_total() * coupon.discount/100
+                cart_total = cart.cart_total() - coupon_value
+                coupon.quantity -= 1
+                coupon.save()
+
+                cart.coupon = coupon
+                cart.total_after_coupon = cart_total
+                cart.save()
+                cart= Cart.objects.get(user=user,status = "InProgress")
+                data = CartSerializer(cart).data
+                return Response({'message':'Coupon  Applyed succsuccessfully','data':data})
+            else:
+                return Response({'message':'the coupon was closed'})
+        return Response({'message':'ther is no coupon'})

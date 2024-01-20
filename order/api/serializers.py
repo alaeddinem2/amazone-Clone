@@ -5,6 +5,7 @@ from product.api.serializers import ProductListSerializer
 class CartDetailSerializer(serializers.ModelSerializer):
     #product = ProductListSerializer()
     product = serializers.StringRelatedField()
+    coupon = serializers.StringRelatedField()
     class Meta:
         model = CartDetail
         fields = '__all__'
