@@ -20,7 +20,8 @@ ORDER_STATUS = (
 class Cart(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"),related_name='cart_user', on_delete=models.SET_NULL,blank=True,null=True)
     status = models.CharField(_("Status"), max_length=10, choices= CART_STATUS)
-
+    coupon = models.ForeignKey('Coupon', verbose_name=_("Coupon"),related_name='coupon_cart', on_delete=models.SET_NULL,blank=True,null=True)
+    total_after_coupon = models.FloatField(_("Total-Coupon"),blank=True,null=True)
     def __str__(self):
         return str(self.user)
     
@@ -42,7 +43,7 @@ class CartDetail(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"),related_name='order_user', on_delete=models.SET_NULL,blank=True,null=True)
-    status = models.CharField(_("Status"), max_length=10, choices=ORDER_STATUS)
+    status = models.CharField(_("Status"), max_length=10, choices=ORDER_STATUS, default = "Recieved")
     code = models.CharField(_("Code"), max_length=50,blank=True,null=True)
     order_time = models.DateTimeField(_("Oder Time"), default=timezone.now)
     delivery_time = models.DateTimeField(_("Delivery Time"), null=True,blank=True)
@@ -56,6 +57,9 @@ class Order(models.Model):
     def save(self,*args, **kwargs):
         if not self.code:
             self.code = generate_code()
+            while  Order.objects.filter(code=self.code) :
+                self.code = generate_code()
+
             super(Order,self).save(*args, **kwargs)
 
 class OrderDetail(models.Model):
