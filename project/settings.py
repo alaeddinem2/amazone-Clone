@@ -177,6 +177,12 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]   # notice the S which was for
 
 LANGUAGES = [
     ("ar", ("Arabic")),
-    ("en", ("English")),
-   
+    ("en", ("English")), 
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
