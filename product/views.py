@@ -5,6 +5,7 @@ from .models import Product,Review,ProductImage,Brand
 from django.db.models import Q , F
 from django.db.models.aggregates import Max, Min, Avg, Count, Sum
 from django.views.decorators.cache import cache_page
+from .tasks import send_emails
 # Create your views here.
 class ProductList(ListView):
     model = Product
@@ -42,7 +43,7 @@ class BrandDetail(ListView):
         return context
     
     
-@cache_page(60 * 15)    
+#@cache_page(60 * 15)    
 def querysetAPI(request):
     
     #data = Product.objects.select_related("brand").all() #prefetch_related = many-to-many
@@ -67,6 +68,9 @@ def querysetAPI(request):
     #data = Product.objects.aggregate(Avg('price'))
     #annotate
     #data = Product.objects.annotate(price_tva=F('price')*1.17)
-    data = Product.objects.all()
+   
+    data = Product.objects.get(id=100)
+
+    send_emails.delay()
     return render(request,"product/querysetApi.html",{"data":data})       
     
