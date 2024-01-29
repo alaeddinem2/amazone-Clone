@@ -10,7 +10,7 @@ urlpatterns = [
     path('brands/',BrandList.as_view()),
     path('brands/<slug:slug>',BrandDetail.as_view()),
     path('test/',querysetAPI),
-    path('<slug:slug>/add_review',add_review,name='add_review'),
+    path('<slug:slug>/',add_review,name='add_review'),
     path('api/list',ProductListApi.as_view()),
     path('api/<int:pk>',ProductDetailApi.as_view()),
     path('api/brand-list',BrandListApi.as_view()),

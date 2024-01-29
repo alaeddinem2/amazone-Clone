@@ -6,7 +6,13 @@ from django.db.models import Q , F
 from django.db.models.aggregates import Max, Min, Avg, Count, Sum
 from django.views.decorators.cache import cache_page
 from .tasks import send_emails
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 # Create your views here.
+
+
+
 class ProductList(ListView):
     model = Product
     paginate_by = 24
@@ -55,7 +61,10 @@ def add_review(request,slug):
         user = request.user
     )
 
-    return redirect(f"/products/{product.slug}")
+    reviews = Review.objects.filter(Product=product)
+    html = render_to_string('include/include_reviews.html',{'reviews':reviews})
+    return JsonResponse({'result':html})
+    #return redirect(f"/products/{product.slug}")
     
     
 #@cache_page(60 * 15)    
