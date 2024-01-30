@@ -12,3 +12,6 @@ class company(models.Model):
     email = models.EmailField(_("Email"), max_length=254)
     phone = models.CharField(_("Phone"), max_length=50)
     address = models.CharField(_("Address"), max_length=50)
+
+class DeleveryFee(models.Model):
+    fee = models.FloatField(default = 5)

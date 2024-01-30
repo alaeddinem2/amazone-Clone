@@ -6,7 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Order,OrderDetail,Cart,CartDetail,Coupon
 from product.models import Product
-
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from config.models import DeleveryFee
 # Create your views here.
 
 class OrderList(LoginRequiredMixin,ListView):
@@ -40,5 +42,44 @@ def remove_from_cart(request,id):
 def checkout(request):
     cart = Cart.objects.get(user=request.user,status="InProgress")
     cart_detail = CartDetail.objects.filter(cart=cart)
+    delevery_fee = DeleveryFee.objects.last().fee
+    print(delevery_fee)
 
-    return render(request,"order/checkout.html",{"cart_detail":cart_detail})
+    if request.method == "POST":
+        coupon = get_object_or_404(Coupon,code = request.POST['coupon_code'])
+        if coupon and coupon.quantity >0 :
+            today_date = timezone.now()
+
+            if today_date >= coupon.start_date and today_date <= coupon.end_date :
+                coupon_value = cart.cart_total() * coupon.discount/100
+                cart_total = cart.cart_total() - coupon_value
+                coupon.quantity -= 1
+                coupon.save()
+
+                cart.coupon = coupon
+                cart.total_after_coupon = cart_total
+                cart.save()
+                cart= Cart.objects.get(user=request.user,status = "InProgress")
+
+                return render(request,"order/checkout.html",{
+                    "cart_detail":cart_detail,
+                    "sub_total":cart_total,
+                    "discount":coupon_value,
+                    "delevery_fee": delevery_fee,
+                    "total":delevery_fee + cart_total
+
+                    },)
+                
+    
+    else:
+        sub_total = cart.cart_total()
+        total = delevery_fee + sub_total
+        
+        return render(request,"order/checkout.html",{
+                    "cart_detail":cart_detail,
+                    "sub_total":sub_total,
+                    "discount":0,
+                    "delevery_fee": delevery_fee,
+                    "total":total
+
+                    },)
