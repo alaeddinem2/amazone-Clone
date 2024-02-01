@@ -9,6 +9,8 @@ from product.models import Product
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from config.models import DeleveryFee
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 # Create your views here.
 
 class OrderList(LoginRequiredMixin,ListView):
@@ -61,14 +63,17 @@ def checkout(request):
                 cart.save()
                 cart= Cart.objects.get(user=request.user,status = "InProgress")
 
-                return render(request,"order/checkout.html",{
-                    "cart_detail":cart_detail,
-                    "sub_total":cart_total,
-                    "discount":coupon_value,
-                    "delevery_fee": delevery_fee,
-                    "total":delevery_fee + cart_total
+                html = render_to_string('include/checkout_table.html',{
+                                        "cart_detail":cart_detail,
+                                        "sub_total":cart_total,
+                                        "discount":coupon_value,
+                                        "delevery_fee": delevery_fee,
+                                        "total":delevery_fee + cart_total
 
-                    },)
+                                        })
+                return JsonResponse({'result':html})
+
+               
                 
     
     else:
