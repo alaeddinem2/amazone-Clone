@@ -197,6 +197,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
 SWAGGER_SETTINGS = {
     'DEFAULT_FIELD_INSPECTORS': [
+        'accounts',
         'drf_yasg.inspectors.CamelCaseJSONFilter',
         'drf_yasg.inspectors.InlineSerializerInspector',
         'drf_yasg.inspectors.RelatedFieldInspector',
