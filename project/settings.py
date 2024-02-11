@@ -208,3 +208,7 @@ SWAGGER_SETTINGS = {
         'drf_yasg.inspectors.StringDefaultFieldInspector',
     ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.EmailBackend.EmailOrUsernameBackend',
+]
