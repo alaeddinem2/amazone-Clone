@@ -212,3 +212,7 @@ SWAGGER_SETTINGS = {
 AUTHENTICATION_BACKENDS = [
     'accounts.EmailBackend.EmailOrUsernameBackend',
 ]
+
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
