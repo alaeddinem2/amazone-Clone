@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'django_filters',
     'taggit',
+    "django_bootstrap5",
     "debug_toolbar",
     'product',
     'config',
