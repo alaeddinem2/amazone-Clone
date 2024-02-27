@@ -17,6 +17,8 @@ def create_profile(sender,instance,created,**kwargs):
         Profile.objects.create(
             user = instance
         )
+        instance.is_active = False
+        instance.save()
 
 
 ADDRESS_TYPE = (

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -212,6 +213,7 @@ SWAGGER_SETTINGS = {
 
 AUTHENTICATION_BACKENDS = [
     'accounts.EmailBackend.EmailOrUsernameBackend',
+   
 ]
 
 LOGIN_REDIRECT_URL = '/'

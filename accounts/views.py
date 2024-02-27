@@ -14,7 +14,7 @@ def signup(request):
             email = form.cleaned_data['email']
             user = form.save()  
 
-            profile = Profile.objects.get(user__username=usernme)
+            profile = Profile.objects.get(user__username=username)
             send_mail(
                     "Account Activation",
                     f"hi {username}\n you code activation is :{profile.code}",
@@ -22,7 +22,7 @@ def signup(request):
                     [email],
                     fail_silently=False,
                     )
-            return redirect('accounts/username/activate')
+            return redirect(f'/accounts/{username}/activate')
 
     else:
         form = SignupForm()
@@ -32,4 +32,19 @@ def signup(request):
 
 
 def activate(request,username):
-    pass
+    profile = Profile.objects.get(user__username=username)
+    user = profile.user
+    if request.method == 'POST':
+        form = ActivationForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            if code == profile.code :
+                profile.code = ''
+                profile.save()
+                user.is_active = True
+                user.save()
+                return redirect('/accounts/login')
+    else:
+        form = ActivationForm()
+
+    return render(request,'registration/activate.html',{'form':form})
