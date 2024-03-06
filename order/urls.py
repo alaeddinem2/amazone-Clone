@@ -1,12 +1,13 @@
 from django.urls import path
 from .views import OrderList,checkout,add_to_cart,remove_from_cart
 from .api.api import CartDetailCreateAPI,OrderListAPI,OrderDetailAPI,CreateOrderAPI,ApplyCouponAPI
+
 app_name = 'order'
 
 
 urlpatterns = [
-    path('',OrderList.as_view()),
-    path('checkout/',checkout), 
+    path('',OrderList.as_view(),name= "orders"),
+    path('checkout/',checkout,name= "checkout"), 
     path('add-to-cart',add_to_cart,name="add-to-cart"),
     path('<int:id>/remove-from-cart',remove_from_cart),
 

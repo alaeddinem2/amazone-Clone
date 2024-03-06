@@ -5,9 +5,9 @@ from .api.api import product_list_api,product_detail_api,ProductDetailApi,Produc
 app_name = 'product'
 
 urlpatterns = [
-    path('', ProductList.as_view()),
-    path('<slug:slug>', ProductDetail.as_view() ),
-    path('brands/',BrandList.as_view()),
+    path('', ProductList.as_view(), name='products'),
+    path('<slug:slug>', ProductDetail.as_view() ,name='product_detail'),
+    path('brands/',BrandList.as_view(),name='brands'),
     path('brands/<slug:slug>',BrandDetail.as_view()),
     path('test/',querysetAPI),
     path('<slug:slug>/',add_review,name='add_review'),
