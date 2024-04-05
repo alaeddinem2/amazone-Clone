@@ -29,7 +29,8 @@ SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*.raqib.dz','eco.raqib.dz','162.19.253.55']
+ALLOWED_HOSTS = ['*.raqib.dz', '162.19.253.55']
+
 
 
 # Application definition
